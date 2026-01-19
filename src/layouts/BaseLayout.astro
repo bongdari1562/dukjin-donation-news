@@ -1,0 +1,14 @@
+---
+const { title = "덕진노인복지관 후원소식" } = Astro.props;
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-zinc-50 text-zinc-900">
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,19 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "src/content/newsletter/images"
+public_folder: "/content/newsletter/images"
+
+collections:
+  - name: "newsletter"
+    label: "후원소식지"
+    folder: "src/content/newsletter"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "제목", name: "title", widget: "string" }
+      - { label: "발행일", name: "date", widget: "datetime" }
+      - { label: "요약", name: "summary", widget: "text" }
+      - { label: "썸네일", name: "thumbnail", widget: "image" }
+      - { label: "이동 링크(URL)", name: "url", widget: "string" }

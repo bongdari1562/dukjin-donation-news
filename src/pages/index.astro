@@ -1,0 +1,87 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const items = await getCollection("newsletter");
+
+const newsletters = items
+  .map((i) => ({
+    title: i.data.title,
+    date: i.data.date.toISOString().slice(0, 10),
+    summary: i.data.summary,
+    thumbnail: i.data.thumbnail,
+    url: i.data.url,
+  }))
+  .sort((a, b) => (a.date < b.date ? 1 : -1));
+---
+
+<BaseLayout title="덕진노인복지관 후원소식">
+  <header class="sticky top-0 z-10 border-b border-zinc-200/70 bg-white/70 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+      <div>
+        <div class="text-lg font-semibold tracking-tight">덕진노인복지관 후원소식</div>
+        <div class="text-sm text-zinc-600">후원으로 만들어진 변화를 소식지로 공유합니다.</div>
+      </div>
+
+      <!-- 어드민: 화면 구석에 아주 작게 -->
+      <a
+        href="/admin"
+        class="text-xs text-zinc-300 hover:text-zinc-700 transition"
+        aria-label="관리자"
+        title="관리자"
+      >
+        ·
+      </a>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-4 py-10">
+    <section class="mb-8">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight">후원 소식지</h1>
+      <p class="mt-2 max-w-2xl text-sm sm:text-base text-zinc-600">
+        카드를 클릭하면 각 소식지 링크로 바로 이동합니다.
+      </p>
+    </section>
+
+    {newsletters.length === 0 ? (
+      <div class="rounded-2xl border border-zinc-200 bg-white p-6 text-zinc-700">
+        아직 등록된 소식지가 없습니다. (어드민에서 소식지를 업로드하면 여기에 표시됩니다.)
+      </div>
+    ) : (
+      <section class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {newsletters.map((n) => (
+          <a
+            href={n.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md active:scale-[0.99] lg:rounded-3xl"
+          >
+            <div class="aspect-[16/9] overflow-hidden bg-zinc-100">
+              <img
+                src={n.thumbnail}
+                alt={n.title}
+                class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                loading="lazy"
+              />
+            </div>
+
+            <div class="p-4 sm:p-5 lg:p-6">
+              <div class="text-xs text-zinc-500">{n.date}</div>
+              <h2 class="mt-1 line-clamp-1 text-lg font-semibold">{n.title}</h2>
+              <p class="mt-2 line-clamp-2 text-sm text-zinc-600">{n.summary}</p>
+              <div class="mt-4 text-sm font-medium text-zinc-800">
+                링크로 이동 <span class="inline-block transition group-hover:translate-x-1">→</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </section>
+    )}
+  </main>
+
+  <footer class="border-t border-zinc-200/70 bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-6 text-sm text-zinc-600">
+      © {new Date().getFullYear()} 덕진노인복지관 · 후원소식
+    </div>
+  </footer>
+</BaseLayout>
