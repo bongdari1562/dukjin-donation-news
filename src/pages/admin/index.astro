@@ -8,50 +8,63 @@ const title = "덕진노인복지관 후원소식 · 관리자";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{title}</title>
+    <style>
+      body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background:#fafafa; color:#18181b; }
+      .wrap { max-width: 720px; margin: 0 auto; padding: 40px 16px; }
+      .card { background:#fff; border:1px solid #e4e4e7; border-radius:16px; padding:18px; }
+      .btn { width:100%; border:0; border-radius:12px; padding:12px 14px; background:#18181b; color:#fff; cursor:pointer; }
+      .btn:disabled { opacity:.6; cursor:not-allowed; }
+      .inp, textarea { width:100%; border:1px solid #e4e4e7; border-radius:12px; padding:10px 12px; }
+      label { display:block; margin-top:14px; font-weight:600; font-size:14px; }
+      .muted { color:#71717a; font-size:13px; margin-top:8px; }
+      .row { display:flex; gap:12px; align-items:center; justify-content:space-between; }
+      .link { background:none; border:0; color:#52525b; cursor:pointer; padding:8px 0; }
+      .preview { margin-top:10px; display:none; gap:12px; align-items:center; }
+      .preview img { width:120px; height:80px; object-fit:cover; border-radius:10px; border:1px solid #e4e4e7; }
+    </style>
   </head>
 
-  <body class="min-h-screen bg-zinc-50 text-zinc-900">
-    <main class="mx-auto max-w-xl px-4 py-10">
-      <h1 class="text-2xl font-semibold tracking-tight">관리자</h1>
-      <p class="mt-2 text-sm text-zinc-600">비밀번호로 로그인 후 소식지를 등록합니다.</p>
+  <body>
+    <main class="wrap">
+      <h1 style="margin:0; font-size:24px;">관리자</h1>
+      <p class="muted">비밀번호로 로그인 후, JPG/PNG 파일을 업로드하여 소식지를 등록합니다.</p>
 
       <!-- 로그인 -->
-      <section id="loginBox" class="mt-8 rounded-2xl border border-zinc-200 bg-white p-5">
-        <label class="block text-sm font-medium">관리자 비밀번호</label>
-        <input id="pw" type="password" class="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2" placeholder="비밀번호 입력" />
-        <button id="loginBtn" class="mt-3 w-full rounded-xl bg-zinc-900 px-4 py-2 text-white">
-          로그인
-        </button>
-        <p id="loginMsg" class="mt-3 text-sm text-zinc-600"></p>
+      <section id="loginBox" class="card" style="margin-top:18px;">
+        <label>관리자 비밀번호</label>
+        <input id="pw" type="password" class="inp" placeholder="비밀번호 입력" />
+        <button id="loginBtn" class="btn" style="margin-top:12px;">로그인</button>
+        <div id="loginMsg" class="muted"></div>
       </section>
 
-      <!-- 등록 폼 -->
-      <section id="formBox" class="mt-8 hidden rounded-2xl border border-zinc-200 bg-white p-5">
-        <div class="flex items-center justify-between">
-          <h2 class="text-lg font-semibold">소식지 등록</h2>
-          <button id="logoutBtn" class="text-sm text-zinc-600 hover:text-zinc-900">로그아웃</button>
+      <!-- 등록 -->
+      <section id="formBox" class="card" style="margin-top:18px; display:none;">
+        <div class="row">
+          <h2 style="margin:0; font-size:18px;">후원소식지 등록</h2>
+          <button id="logoutBtn" class="link">로그아웃</button>
         </div>
 
-        <label class="mt-4 block text-sm font-medium">제목</label>
-        <input id="title" class="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2" />
+        <label>제목</label>
+        <input id="title" class="inp" />
 
-        <label class="mt-4 block text-sm font-medium">발행일</label>
-        <input id="date" type="date" class="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2" />
+        <label>발행일</label>
+        <input id="date" type="date" class="inp" />
 
-        <label class="mt-4 block text-sm font-medium">요약</label>
-        <textarea id="summary" rows="3" class="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2"></textarea>
+        <label>요약</label>
+        <textarea id="summary" rows="3" class="inp"></textarea>
 
-        <label class="mt-4 block text-sm font-medium">썸네일 이미지 URL</label>
-        <input id="thumbnail" class="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2" placeholder="https://..." />
+        <label>썸네일 이미지 파일 (JPG/PNG)</label>
+        <input id="imageFile" type="file" accept="image/jpeg,image/png" class="inp" />
+        <div class="preview" id="previewBox">
+          <img id="previewImg" alt="미리보기" />
+          <div class="muted" id="previewMeta"></div>
+        </div>
 
-        <label class="mt-4 block text-sm font-medium">이동 링크(URL)</label>
-        <input id="url" class="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2" placeholder="https://..." />
+        <label>이동 링크(URL)</label>
+        <input id="url" class="inp" placeholder="https://..." />
 
-        <button id="publishBtn" class="mt-5 w-full rounded-xl bg-zinc-900 px-4 py-2 text-white">
-          등록(저장)
-        </button>
-
-        <p id="publishMsg" class="mt-3 text-sm text-zinc-600"></p>
+        <button id="publishBtn" class="btn" style="margin-top:14px;">등록(저장)</button>
+        <div id="publishMsg" class="muted"></div>
       </section>
     </main>
 
@@ -60,29 +73,26 @@ const title = "덕진노인복지관 후원소식 · 관리자";
       const formBox = document.getElementById("formBox");
       const loginMsg = document.getElementById("loginMsg");
       const publishMsg = document.getElementById("publishMsg");
+      const imageInput = document.getElementById("imageFile");
+      const previewBox = document.getElementById("previewBox");
+      const previewImg = document.getElementById("previewImg");
+      const previewMeta = document.getElementById("previewMeta");
 
-      function setToken(t) {
-        localStorage.setItem("adminToken", t);
-      }
-      function getToken() {
-        return localStorage.getItem("adminToken");
-      }
-      function clearToken() {
-        localStorage.removeItem("adminToken");
-      }
+      function setToken(t){ localStorage.setItem("adminToken", t); }
+      function getToken(){ return localStorage.getItem("adminToken"); }
+      function clearToken(){ localStorage.removeItem("adminToken"); }
 
-      async function checkExisting() {
+      async function checkExisting(){
         const token = getToken();
         if (!token) return;
-        // 토큰 유효성 확인
         const r = await fetch("/.netlify/functions/auth", {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ token }),
         });
         if (r.ok) {
-          loginBox.classList.add("hidden");
-          formBox.classList.remove("hidden");
+          loginBox.style.display = "none";
+          formBox.style.display = "block";
         }
       }
 
@@ -95,33 +105,70 @@ const title = "덕진노인복지관 후원소식 · 관리자";
           body: JSON.stringify({ password }),
         });
         const data = await r.json().catch(() => ({}));
-        if (!r.ok) {
-          loginMsg.textContent = data?.error || "로그인 실패";
-          return;
-        }
+        if (!r.ok) { loginMsg.textContent = data?.error || "로그인 실패"; return; }
         setToken(data.token);
         loginMsg.textContent = "로그인 성공!";
-        loginBox.classList.add("hidden");
-        formBox.classList.remove("hidden");
+        loginBox.style.display = "none";
+        formBox.style.display = "block";
       });
 
       document.getElementById("logoutBtn").addEventListener("click", () => {
         clearToken();
-        formBox.classList.add("hidden");
-        loginBox.classList.remove("hidden");
+        formBox.style.display = "none";
+        loginBox.style.display = "block";
         loginMsg.textContent = "";
       });
 
+      // 파일 미리보기
+      imageInput.addEventListener("change", () => {
+        const f = imageInput.files?.[0];
+        if (!f) { previewBox.style.display = "none"; return; }
+        previewImg.src = URL.createObjectURL(f);
+        previewMeta.textContent = `${f.name} · ${(f.size/1024).toFixed(1)} KB`;
+        previewBox.style.display = "flex";
+      });
+
+      function fileToBase64(file){
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+
       document.getElementById("publishBtn").addEventListener("click", async () => {
+        publishMsg.textContent = "";
+        const btn = document.getElementById("publishBtn");
+        btn.disabled = true;
         publishMsg.textContent = "등록 중...";
+
         const token = getToken();
+        const title = document.getElementById("title").value.trim();
+        const date = document.getElementById("date").value;
+        const summary = document.getElementById("summary").value.trim();
+        const url = document.getElementById("url").value.trim();
+        const f = imageInput.files?.[0];
+
+        if (!token) { publishMsg.textContent = "로그인이 필요합니다."; btn.disabled = false; return; }
+        if (!title || !date || !summary || !url) { publishMsg.textContent = "제목/날짜/요약/링크를 입력해주세요."; btn.disabled = false; return; }
+        if (!f) { publishMsg.textContent = "썸네일 이미지(JPG/PNG)를 선택해주세요."; btn.disabled = false; return; }
+        if (!["image/jpeg","image/png"].includes(f.type)) { publishMsg.textContent = "JPG 또는 PNG만 가능합니다."; btn.disabled = false; return; }
+        if (f.size > 2 * 1024 * 1024) { publishMsg.textContent = "이미지 용량은 2MB 이하로 올려주세요."; btn.disabled = false; return; }
+
+        const dataUrl = await fileToBase64(f); // "data:image/...;base64,...."
+
         const payload = {
           token,
-          title: document.getElementById("title").value.trim(),
-          date: document.getElementById("date").value,
-          summary: document.getElementById("summary").value.trim(),
-          thumbnail: document.getElementById("thumbnail").value.trim(),
-          url: document.getElementById("url").value.trim(),
+          title,
+          date,
+          summary,
+          url,
+          image: {
+            filename: f.name,
+            contentType: f.type,
+            dataUrl, // base64 포함
+          }
         };
 
         const r = await fetch("/.netlify/functions/publishNewsletter", {
@@ -133,9 +180,12 @@ const title = "덕진노인복지관 후원소식 · 관리자";
         const data = await r.json().catch(() => ({}));
         if (!r.ok) {
           publishMsg.textContent = data?.error || "등록 실패";
+          btn.disabled = false;
           return;
         }
-        publishMsg.textContent = "등록 완료! (Netlify가 자동 재배포 후 메인에 반영됩니다)";
+
+        publishMsg.textContent = "등록 완료! Netlify가 자동 재배포 후 메인에 반영됩니다.";
+        btn.disabled = false;
       });
 
       checkExisting();
