@@ -9,7 +9,7 @@ const title = "덕진노인복지관 후원소식 · 관리자";
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
 
-    <!-- Netlify Identity widget (이게 핵심입니다) -->
+    <!-- Netlify Identity widget: reset/confirm 링크 처리에 필요 -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
@@ -18,12 +18,12 @@ const title = "덕진노인복지관 후원소식 · 관리자";
 
     <script>
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
+        // 비밀번호 재설정/초대 링크 등으로 들어온 경우 자동으로 처리
+        window.netlifyIdentity.on("init", (user) => {
+          // 로그인 직후에는 관리자 페이지로 돌아오게
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
         });
       }
     </script>
